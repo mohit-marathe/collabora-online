@@ -938,11 +938,23 @@ L.Control.NotebookbarCalc = L.Control.NotebookbarWriter.extend({
 			},
 			{ type: 'separator', id: 'layout-sheetrighttoleft-break', orientation: 'vertical' },
 			{
-				'id': 'view-togglegrid',
-				'type': 'bigtoolitem',
-				'text': _UNO('.uno:ToggleSheetGrid','spreadsheet'),
-				'command': '.uno:ToggleSheetGrid',
-				'accessibility': { focusBack: true,	combination: 'SG', de: null }
+				'type': 'container',
+				'children': [
+					{
+						'id': 'view-togglegrid',
+						'type': 'bigtoolitem',
+						'text': _UNO('.uno:ToggleSheetGrid','spreadsheet'),
+						'command': '.uno:ToggleSheetGrid',
+						'accessibility': { focusBack: true,	combination: 'SG', de: null }
+					},
+					{
+						'id': 'view-togglegridprint',
+						'type': 'bigcustomtoolitem',
+						'text': _('Print Grid Lines'),
+						'command': 'printgrid',
+						'accessibility': { focusBack: true,	combination: 'GP', de: null }
+					}
+				]
 			},
 			{ type: 'separator', id: 'layout-togglegrid-break', orientation: 'vertical' },
 			{

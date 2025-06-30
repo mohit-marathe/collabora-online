@@ -407,6 +407,7 @@ class Dispatcher {
 
 		this.actionsMap['print-active-sheet'] = function () {
 			const currentSheet = app.map._docLayer._selectedPart + 1;
+			const printGrid = window.prefs.getBoolean('PrintGridlinesEnabled');
 			const options = {
 				ExportFormFields: {
 					type: 'boolean',
@@ -420,13 +421,25 @@ class Dispatcher {
 					type: 'string',
 					value: currentSheet + '-' + currentSheet,
 				},
+				PrintGridlines: {
+					type: 'boolean',
+					value: printGrid,
+				},
 			};
 			const optionsString = JSON.stringify(options);
 			app.map.print(optionsString);
 		};
 
 		this.actionsMap['print-all-sheets'] = function () {
-			app.map.print();
+			const printGrid = window.prefs.getBoolean('PrintGridlinesEnabled');
+			const options = {
+				PrintGridlines: {
+					type: 'boolean',
+					value: printGrid,
+				},
+			};
+			const optionsString = JSON.stringify(options);
+			app.map.print(optionsString);
 		};
 		this.actionsMap['togglerelative'] = function () {
 			app.map.sendUnoCommand('.uno:ToggleRelative');
@@ -468,6 +481,10 @@ class Dispatcher {
 			else FocusCellSection.hideFocusCellSection();
 
 			app.sectionContainer.requestReDraw();
+		};
+		this.actionsMap['printgrid'] = function () {
+			const newState = !app.map.uiManager.getPrintGridlineMode();
+			app.map.uiManager.setPrintGridlineMode(newState);
 		};
 	}
 

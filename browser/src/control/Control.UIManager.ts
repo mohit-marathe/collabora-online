@@ -335,6 +335,23 @@ class UIManager extends L.Control {
 	}
 
 	/**
+	 * Returns if print gridline is enabled
+	 */
+	getPrintGridlineMode(): boolean {
+		return window.prefs.getBoolean('PrintGridlinesEnabled', false);
+	}
+
+	/**
+	 * Changes status of print gridline.
+	 */
+	setPrintGridlineMode(newState: boolean): void {
+		window.prefs.set('PrintGridlinesEnabled', newState);
+		const printGridState = newState? 'true' : 'false';
+		this.map['stateChangeHandler'].setItemValue('printgrid', printGridState);
+		this._map.fire('commandstatechanged', {commandName : 'printgrid', state : printGridState});
+	}
+
+	/**
 	 * Setup menubar and the top toolbar.
 	 */
 	initializeMenubarAndTopToolbar(): void {
@@ -497,6 +514,10 @@ class UIManager extends L.Control {
 			const highlightState = this.getHighlightMode()? 'true' : 'false';
 			this.map['stateChangeHandler'].setItemValue('columnrowhighlight', highlightState);
 			this._map.fire('commandstatechanged', {commandName : 'columnrowhighlight', state : highlightState});
+
+			const printGridlineState = this.getPrintGridlineMode() ? 'true' : 'false';
+			this.map['stateChangeHandler'].setItemValue('printgrid', printGridlineState);
+			this._map.fire('commandstatechanged', {commandName : '', state : printGridlineState});
 		}
 
 		if (this.map.isPresentationOrDrawing()) {
