@@ -125,6 +125,7 @@ L.IFrameDialog = L.Class.extend({
 window.addEventListener('keyup', function iframeKeyupListener (e) {
 	if (e.keyCode === 27 || e.key === 'Escape') {
 		window.postMessage('{"MessageId":"welcome-close"}', '*');
+		window.postMessage('{"MessageId":"settings-cancel"}', '*');
 	}
 });
 

@@ -66,6 +66,35 @@ const initTranslationStr = () => {
 		document.documentElement.getAttribute('lang') || String.defaultLocale;
 };
 
+const onLoaded = () => {
+	window.addEventListener('message', onMessage, false);
+	window.parent.postMessage('{"MessageId":"settings-ready"}', '*');
+
+	const cancel = document.getElementById('settings-cancel');
+	if (cancel) {
+		cancel.onclick = () => {
+			onCancel();
+		};
+	}
+};
+
+const onMessage = (e) => {
+	try {
+		if (e.origin === window.origin && window.parent !== window.self) {
+			window.parent.postMessage('{"MessageId":"settings-show"}', '*');
+		}
+	} catch (err) {
+		console.error('Error processing message:', err);
+		return;
+	}
+};
+
+const onCancel = () => {
+	if (window.parent !== window.self) {
+		window.parent.postMessage('{"MessageId":"settings-cancel"}', '*');
+	}
+};
+
 const defaultBrowserSetting: Record<string, any> = {
 	compactMode: {
 		value: false,
@@ -1526,4 +1555,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 });
 
-(window as any)._ = _;
+// (window as any)._ = _;
+
+(window as any).onload = onLoaded;

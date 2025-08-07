@@ -221,6 +221,10 @@ class Dispatcher {
 			}
 		};
 
+		this.actionsMap['settings'] = function () {
+			app.map.settings.showSettingsDialog();
+		};
+
 		this.actionsMap['insertcomment'] = function () {
 			app.map.insertComment();
 		};

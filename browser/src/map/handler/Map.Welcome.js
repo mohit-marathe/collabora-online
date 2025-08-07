@@ -37,6 +37,7 @@ L.Map.Welcome = L.Handler.extend({
 	},
 
 	addHooks: function () {
+		console.log('Hello from addHooks in welcome');
 		L.DomEvent.on(window, 'message', this.onMessage, this);
 		this.remove();
 	},
