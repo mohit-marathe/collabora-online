@@ -79,6 +79,37 @@ L.IFrameDialog = L.Class.extend({
 				window.postMessage('{"MessageId":"' + msg + '"}');
 			}
 		}, 1000);
+
+		if (this.options.stylesheets) {
+			this.addStyleSheets(this.options.stylesheets);
+		}
+	},
+
+	addStyleSheet: function (href) {
+		if (!this._iframe || !this._iframe.contentDocument) {
+			console.error('Cannot access iframe element');
+			return false;
+		}
+
+		let head = this._iframe.contentDocument.head;
+		if (!head) {
+			console.error('Iframe has no head element');
+			return false;
+		}
+
+		let link = this._iframe.contentDocument.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = href;
+		head.appendChild(link);
+
+		return true;
+	},
+
+	addStyleSheets: function (stylesheets) {
+		for (let i = 0; i < stylesheets.length; i++) {
+			this.addStyleSheet(stylesheets[i]);
+		}
 	},
 
 	clearTimeout: function ()

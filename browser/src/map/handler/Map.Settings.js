@@ -53,18 +53,25 @@ L.Map.Settings = L.Handler.extend({
 		if (this._iframeDialog && this._iframeDialog.hasLoaded())
 			this.removeIframe();
 
-		var cssVar = getComputedStyle(document.documentElement).getPropertyValue(
+		const cssVar = getComputedStyle(document.documentElement).getPropertyValue(
 			'--co-primary-element',
 		);
-		var params = [
+
+		const params = [
 			{ mobile: window.mode.isMobile() },
 			{ cssvar: cssVar },
 			{ doc_type: this._map.getDocType() },
+			{ access_token: window.accessToken },
+			{ access_token_ttl: window.accessTokenTTL },
+			{ wopi_setting_base_url: window.wopiSettingBaseUrl },
 		];
 
-		this._iframeDialog = L.iframeDialog(this._url, params, null, {
+		const options = {
 			prefix: 'iframe-settings',
-		});
+			stylesheets: ['../settings.css'],
+		};
+
+		this._iframeDialog = L.iframeDialog(this._url, params, null, options);
 	},
 
 	onMessage: function (e) {
