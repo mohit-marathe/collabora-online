@@ -35,9 +35,6 @@ L.Map.Settings = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		if (this._map.wopi)
-			this._map.on('updateviewslist', this.onUpdateList, this);
-
 		L.DomEvent.on(window, 'message', this.onMessage, this);
 	},
 
@@ -69,16 +66,49 @@ L.Map.Settings = L.Handler.extend({
 		const options = {
 			prefix: 'iframe-settings',
 			stylesheets: ['../settings.css'],
+			modalButtons: [
+				{
+					id: 'iframe-settings-cancel',
+					text: 'Cancel',
+					align: 'right',
+				},
+				{
+					id: 'iframe-settings-save',
+					text: 'Save',
+					align: 'right',
+				},
+			],
+			dialogCssClass:
+				'jsdialog-container ui-dialog lokdialog_container ui-widget-content',
 		};
 
 		this._iframeDialog = L.iframeDialog(this._url, params, null, options);
+
+		const cancelButton = document.getElementById('iframe-settings-cancel');
+		const saveButton = document.getElementById('iframe-settings-save');
+
+		L.DomEvent.on(
+			cancelButton,
+			'click',
+			function () {
+				// TODO: discard all the changes made in the settings
+				this.removeIframe();
+			},
+			this,
+		);
+
+		L.DomEvent.on(
+			saveButton,
+			'click',
+			function () {
+				// TODO: handle save button
+			},
+			this,
+		);
 	},
 
 	onMessage: function (e) {
 		if (typeof e.data !== 'string') return; // Some extensions may inject scripts resulting in load events that are not strings
-
-		if (e.data.startsWith('updatecheck-show')) return;
-
 		let data = e.data;
 		data = JSON.parse(data);
 

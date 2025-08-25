@@ -25,7 +25,9 @@ L.IFrameDialog = L.Class.extend({
 		this._loading = false;
 		L.setOptions(this, options);
 
-		this._container = L.DomUtil.create('div', this.options.prefix + '-wrap');
+		const containerCss = this.options.dialogCssClass;
+
+		this._container = L.DomUtil.create('div', this.options.prefix + '-wrap ' + containerCss);
 		content = L.DomUtil.create('div', this.options.prefix + '-content', this._container);
 
 		this._container.style.display = 'none';
@@ -41,6 +43,33 @@ L.IFrameDialog = L.Class.extend({
 
 		if (this.options.id) {
 			this._iframe.id = this.options.id;
+		}
+
+		const modalButtons = this.options.modalButtons; 
+
+		if (modalButtons) {
+			const buttonBox = L.DomUtil.create(
+				'div',
+				'jsdialog ui-button-box end',
+				content
+			);
+			const buttonBoxLeft = L.DomUtil.create(
+				'div',
+				'jsdialog ui-button-box-left',
+				buttonBox
+			);
+			const buttonBoxRight = L.DomUtil.create(
+				'div',
+				'jsdialog ui-button-box-right',
+				buttonBox
+			);
+
+			for (const i in modalButtons) {
+				const wrapper = L.DomUtil.create('div','ui-pushbutton-wrapper', modalButtons[i].align === 'left' ? buttonBoxLeft : buttonBoxRight);
+				wrapper.id = modalButtons[i].id;
+				const button = L.DomUtil.create('button', 'ui-pushbutton', wrapper);
+				button.innerText = modalButtons[i].text;
+			}
 		}
 
 		if (element) {
@@ -107,7 +136,7 @@ L.IFrameDialog = L.Class.extend({
 	},
 
 	addStyleSheets: function (stylesheets) {
-		for (let i = 0; i < stylesheets.length; i++) {
+		for (const i in stylesheets) {
 			this.addStyleSheet(stylesheets[i]);
 		}
 	},

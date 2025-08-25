@@ -69,13 +69,6 @@ const initTranslationStr = () => {
 const onLoaded = () => {
 	window.addEventListener('message', onMessage, false);
 	window.parent.postMessage('{"MessageId":"settings-ready"}', '*');
-
-	const cancel = document.getElementById('settings-cancel');
-	if (cancel) {
-		cancel.onclick = () => {
-			onCancel();
-		};
-	}
 };
 
 const onMessage = (e) => {
@@ -86,12 +79,6 @@ const onMessage = (e) => {
 	} catch (err) {
 		console.error('Error processing message:', err);
 		return;
-	}
-};
-
-const onCancel = () => {
-	if (window.parent !== window.self) {
-		window.parent.postMessage('{"MessageId":"settings-cancel"}', '*');
 	}
 };
 
@@ -222,6 +209,7 @@ class SettingIframe {
 		if (!element) return;
 
 		window.accessToken = element.dataset.accessToken;
+		console.log('accessToken:', window.accessToken);
 		window.accessTokenTTL = element.dataset.accessTokenTtl;
 		window.enableDebug = element.dataset.enableDebug === 'true';
 		window.enableAccessibility = element.dataset.enableAccessibility === 'true';

@@ -240,6 +240,7 @@ class InitializerBase {
 		window.hexifyUrl = false;
 		window.versionPath = "";
 		window.accessToken = element.dataset.accessToken;
+		console.log("accessToken in global.js:", window.accessToken)
 		window.accessTokenTTL = element.dataset.accessTokenTtl;
 		window.noAuthHeader = element.dataset.noAuthHeader;
 		window.accessHeader = element.dataset.accessHeader;
